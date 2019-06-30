@@ -63,27 +63,27 @@ const IPFS = require('ipfs');
 
   const pubSubTestsPrivateKey = await _keyLookup(node, 'pubsub-tests');
   console.log('pubSubTestsPrivateKey', pubSubTestsPrivateKey);
-  // const pubSubTestsPeerId = await _createPeerIdFromPrivKey(pubSubTestsPrivateKey.bytes);
-  // console.log('pubSubTestsPeerId', pubSubTestsPeerId);
+  const pubSubTestsPeerId = await _createPeerIdFromPrivKey(pubSubTestsPrivateKey.bytes);
+  console.log('pubSubTestsPeerId', pubSubTestsPeerId);
 
   // console.log('node', node);
   // console.log('node._floodSub', node._floodSub);
 
   // const fsub = new FloodSub(node.libp2p);
   // fsub.peerId = pubSubTestsPeerId;
-  // const fsub = node.libp2p._floodSub;
-  //
-  // improveFloodSub(fsub);
-  // improvePubSub(fsub);
+  const fsub = node.libp2p._floodSub;
+  // //
+  improveFloodSub(fsub);
+  improvePubSub(fsub);
 
   // console.log('node.libp2p.peerInfo.id', node.libp2p.peerInfo.id);
   //
-  // fsub.on('fruit', (data) => {
-  //   console.log('on fruit', data)
-  // });
-  // fsub.subscribe('fruit');
-  //
-  // fsub.publish('fruit', new Buffer('banana'), pubSubTestsPeerId, () => {});
+  fsub.on('fruit', (data) => {
+    console.log('on fruit', data)
+  });
+  fsub.subscribe('fruit');
+
+  fsub.publishByPeerId(pubSubTestsPeerId, 'fruit', new Buffer('banana'), () => {});
 
   const nodeId = await _nodeId();
   const listenData = await require('./listen-pubsub')(nodeId.addresses[0], selfIpns);
@@ -109,7 +109,7 @@ const IPFS = require('ipfs');
 
 function improveFloodSub(fsub) {
   //https://github.com/libp2p/js-libp2p-floodsub/blob/4feadeb9ef0cc35892a9c499c740e759b3d73ec8/src/index.js#L167
-  fsub.publish = (function (topics, messages, peerId = null, callback) {
+  fsub.publishByPeerId = (function (peerId, topics, messages, callback) {
     assert(this.started, 'FloodSub is not started')
     callback = callback || noop
 
@@ -134,7 +134,7 @@ function improveFloodSub(fsub) {
       // Emit to self if I'm interested
       this._emitMessages(topics, [message])
 
-      this._buildMessage(message, peerId || this.peerId, cb)
+      this._buildMessageByPeerId(peerId, message, cb)
     }
 
     asyncMap(messages, buildMessage, (err, msgObjects) => {
@@ -146,23 +146,26 @@ function improveFloodSub(fsub) {
       callback(null)
     })
   }).bind(fsub);
+
+  fsub.publish = function (topics, messages, callback) {
+    this.publishByPeerId(this.peerId, topics, messages, callback);
+  };
 }
 
 
 function improvePubSub(fsub) {
   // https://github.com/libp2p/js-libp2p-pubsub/blob/f1e188929d779e7af91e1fd039b2c3b95cdf05df/src/index.js#L246
-  fsub._buildMessage = (function (message, peerId = null, callback) {
-    if(_.isFunction(peerId)) {
-      callback = peerId;
-      peerId = null;
-    }
+  fsub._buildMessageByPeerId = (function (peerId, message, callback) {
     const msg = utils.normalizeOutRpcMessage(message)
     if (peerId) {
-      // console.log('_buildMessage peerId', peerId);
-      signMessage(peerId || this.peerId, msg, callback)
+      signMessage(peerId, msg, callback)
     } else {
       nextTick(callback, null, msg)
     }
+  }).bind(fsub);
+  
+  fsub._buildMessage = (function (message, callback) {
+    this._buildMessageByPeerId(this.peerId, message, callback)
   }).bind(fsub);
 }
 

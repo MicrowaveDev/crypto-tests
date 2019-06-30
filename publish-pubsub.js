@@ -47,21 +47,22 @@ const IPFS = require('ipfs');
     console.error('❌ IPFS not started', e);
   }
 
-  // const ipfsService = new JsIpfsServiceNode(node);
+  const ipfsService = new JsIpfsServiceNode(node);
   //
-  // const selfIpns =  await ipfsService.getAccountIdByName('self');
-  // console.log('self ipns', selfIpns);
+  const selfIpns =  await ipfsService.getAccountIdByName('self');
+  console.log('self ipns', selfIpns);
   //
-  // await ipfsService.createAccountIfNotExists('pubsub-tests');
-  //
-  // const pubSubTestsIpns = await ipfsService.getAccountIdByName('pubsub-tests');
-  // console.log('pubsub-tests ipns', pubSubTestsIpns);
+  const pubSubTestsName = 'pubsub-tests';
+  await ipfsService.createAccountIfNotExists(pubSubTestsName);
+
+  const pubSubTestsIpns = await ipfsService.getAccountIdByName(pubSubTestsName);
+  console.log('pubsub-tests ipns', pubSubTestsIpns);
 
   // console.log('node', node);
   // console.log('node._repo.keys', node._repo.keys);
 
-  // const pubSubTestsPrivateKey = await _keyLookup(node, 'pubsub-tests');
-  // console.log('pubSubTestsPrivateKey', pubSubTestsPrivateKey);
+  const pubSubTestsPrivateKey = await _keyLookup(node, 'pubsub-tests');
+  console.log('pubSubTestsPrivateKey', pubSubTestsPrivateKey);
   // const pubSubTestsPeerId = await _createPeerIdFromPrivKey(pubSubTestsPrivateKey.bytes);
   // console.log('pubSubTestsPeerId', pubSubTestsPeerId);
 
@@ -84,7 +85,8 @@ const IPFS = require('ipfs');
   //
   // fsub.publish('fruit', new Buffer('banana'), pubSubTestsPeerId, () => {});
 
-  const listenData = await require('./listen-pubsub')(await _nodeId());
+  const nodeId = await _nodeId();
+  const listenData = await require('./listen-pubsub')(nodeId.addresses[0], selfIpns);
   
   console.log('waitForPeerToSubscribe', listenData.topic);
   
@@ -94,7 +96,7 @@ const IPFS = require('ipfs');
   
   console.log('bindToStaticId');
   node.name.publish(`QmVHfpvraLsdz315esr92DE9ghVcssi95ukUaP4VpW1Kiu`, {
-    key: 'self',
+    key: pubSubTestsName,
     lifetime: '1h'
   });
 
@@ -106,6 +108,7 @@ const IPFS = require('ipfs');
 //peerId.createFromPrivKey(Buffer.from(opts.privateKey, 'base64'), cb)
 
 function improveFloodSub(fsub) {
+  //https://github.com/libp2p/js-libp2p-floodsub/blob/4feadeb9ef0cc35892a9c499c740e759b3d73ec8/src/index.js#L167
   fsub.publish = (function (topics, messages, peerId = null, callback) {
     assert(this.started, 'FloodSub is not started')
     callback = callback || noop
@@ -147,6 +150,7 @@ function improveFloodSub(fsub) {
 
 
 function improvePubSub(fsub) {
+  // https://github.com/libp2p/js-libp2p-pubsub/blob/f1e188929d779e7af91e1fd039b2c3b95cdf05df/src/index.js#L246
   fsub._buildMessage = (function (message, peerId = null, callback) {
     if(_.isFunction(peerId)) {
       callback = peerId;
@@ -200,6 +204,7 @@ function waitForPeerToSubscribe (node, topic, callback) {
     })
   }, callback)
 }
+//https://github.com/libp2p/js-libp2p-pubsub/commit/5cb17fd55986e99fd396ad2830aa673af259c8ab#diff-d4024471b15c32404831443a7a111f99R97
 
 // const message = {
 //   from: pubSubTestsIpns,

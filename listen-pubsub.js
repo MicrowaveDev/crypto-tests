@@ -44,6 +44,10 @@ module.exports = async (nodeId) => {
   await _pubSubSubscribe(topic, (data) => {
     console.log('event emitted!', data);
   });
+  
+  await _pubSubSubscribe('fruit', (data) => {
+    console.log('fruit event emitted!', data);
+  });
 
   console.log('subscribed to ' + topic);
   

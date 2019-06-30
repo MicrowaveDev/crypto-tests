@@ -83,8 +83,6 @@ const IPFS = require('ipfs');
   });
   fsub.subscribe('fruit');
 
-  fsub.publishByPeerId(pubSubTestsPeerId, 'fruit', new Buffer('banana'), () => {});
-
   const nodeId = await _nodeId();
   const listenData = await require('./listen-pubsub')(nodeId.addresses[0], selfIpns);
   
@@ -100,9 +98,11 @@ const IPFS = require('ipfs');
     lifetime: '1h'
   });
 
-  node.pubsub.publish('fruit', new Buffer('banana2'), (err) => {
-    console.log('err', err);
-  });
+
+  fsub.publishByPeerId(pubSubTestsPeerId, 'fruit', new Buffer('banana'), () => {});
+  // node.pubsub.publish('fruit', new Buffer('banana2'), (err) => {
+  //   console.log('err', err);
+  // });
 })();
 
 //peerId.createFromPrivKey(Buffer.from(opts.privateKey, 'base64'), cb)

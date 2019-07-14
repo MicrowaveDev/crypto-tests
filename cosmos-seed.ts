@@ -18,7 +18,7 @@ const accountIndex = 0;
   const node = bip32.fromSeed(seed);
   const child = node.derivePath(`m/44'/${networkIndex}'/0'/0/${accountIndex}`);
   const words = bech32.toWords(child.identifier);
-  const address = bech32.encode('cyber', words);
+  const address = bech32.encode('terra', words);
   const ecpair = bitcoinjs.ECPair.fromPrivateKey(child.privateKey, { compressed: false });
   const privateKey = ecpair.privateKey.toString('hex');
 

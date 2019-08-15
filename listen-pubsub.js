@@ -1,8 +1,8 @@
 const util = require('util');
 const IPFS = require('ipfs');
 const DaemonFactory = require('ipfsd-ctl');
-const JsIpfsServiceNode = require("@galtproject/geesome-libs/src/JsIpfsServiceNode");
-const ipfsHelper = require("@galtproject/geesome-libs/src/ipfsHelper");
+const JsIpfsServiceNode = require("geesome-libs/src/JsIpfsServiceNode");
+const ipfsHelper = require("geesome-libs/src/ipfsHelper");
 
 module.exports = async (listenToNodeAddress, ipnsToSubscribe) => {
   console.log('listenToNodeAddress', listenToNodeAddress);

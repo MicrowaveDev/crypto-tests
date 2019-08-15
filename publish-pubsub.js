@@ -1,8 +1,8 @@
 const util = require('util');
 const retry = require('async/retry');
 
-const JsIpfsServiceNode = require("@galtproject/geesome-libs/src/JsIpfsServiceNode");
-const ipfsHelper = require("@galtproject/geesome-libs/src/ipfsHelper");
+const JsIpfsServiceNode = require("geesome-libs/src/JsIpfsServiceNode");
+const ipfsHelper = require("geesome-libs/src/ipfsHelper");
 
 const IPFS = require('ipfs');
 

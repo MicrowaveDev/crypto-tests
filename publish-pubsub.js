@@ -32,7 +32,7 @@ const IPFS = require('ipfs');
 
   const ipfsService = new JsIpfsServiceNode(node);
 
-  const selfIpns =  await ipfsService.getAccountIdByName('self');
+  const selfIpns = await ipfsService.getAccountIdByName('self');
   console.log('self ipns', selfIpns);
 
   const pubSubTestsName = 'pubsub-tests';
@@ -67,6 +67,7 @@ const IPFS = require('ipfs');
 
 
   ipfsService.publishEventByPeerId(pubSubTestsPeerId, 'fruit', 'banana', () => {});
+  ipfsService.publishEvent('fruit', 'banana 2', () => {});
 })();
 
 //peerId.createFromPrivKey(Buffer.from(opts.privateKey, 'base64'), cb)

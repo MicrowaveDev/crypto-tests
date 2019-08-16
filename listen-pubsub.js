@@ -3,6 +3,7 @@ const IPFS = require('ipfs');
 const DaemonFactory = require('ipfsd-ctl');
 const JsIpfsServiceNode = require("geesome-libs/src/JsIpfsServiceNode");
 const ipfsHelper = require("geesome-libs/src/ipfsHelper");
+const { getIpnsUpdatesTopic } = require("geesome-libs/src/name");
 
 module.exports = async (listenToNodeAddress, ipnsToSubscribe) => {
   console.log('listenToNodeAddress', listenToNodeAddress);
@@ -31,6 +32,7 @@ module.exports = async (listenToNodeAddress, ipnsToSubscribe) => {
 
   const ipfsService = new JsIpfsServiceNode(node.api);
   
+  console.log('swarmConnect', listenToNodeAddress);
   await ipfsService.swarmConnect(listenToNodeAddress);
   
   await ipfsService.subscribeToIpnsUpdates(ipnsToSubscribe, async (event) => {
@@ -42,7 +44,7 @@ module.exports = async (listenToNodeAddress, ipnsToSubscribe) => {
     console.log('fruit event emitted!', event);
   });
   
-  const topic = ipfsHelper.getIpnsUpdatesTopic(ipnsToSubscribe);
+  const topic = getIpnsUpdatesTopic(ipnsToSubscribe);
 
   console.log('subscribed to ' + topic);
   

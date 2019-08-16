@@ -569,16 +569,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@galtproject/geesome-libs@git://github.com/galtspace/geesome-libs.git#813eb01":
-  version "1.0.0"
-  resolved "git://github.com/galtspace/geesome-libs.git#813eb01bd115c2742f770247807d05c5066415ad"
-  dependencies:
-    cids "^0.7.1"
-    ipfs "^0.35.0"
-    ipns "^0.5.2"
-    lodash "^4.17.11"
-    peer-id "^0.12.2"
-
 "@types/chai@^4.1.3":
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.7.tgz#1b8e33b61a8c09cbe1f85133071baa0dbf9fa71a"
@@ -777,6 +767,13 @@ async@^3.1.0:
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
+
+axios@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.0.tgz#8e09bff3d9122e133f7b8101c8fbdd00ed3d2ab8"
+  dependencies:
+    follow-redirects "1.5.10"
+    is-buffer "^2.0.2"
 
 b64@3.x.x:
   version "3.0.3"
@@ -1716,7 +1713,7 @@ buffer-xor@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/buffer-xor/-/buffer-xor-1.0.3.tgz#26e61ed1422fb70dd42e6e36729ed51d855fe8d9"
 
-buffer@^5.2.1:
+buffer@5.2.1, buffer@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.2.1.tgz#dd57fa0f109ac59c602479044dca7b8b3d0b71d6"
   dependencies:
@@ -2099,7 +2096,7 @@ cryptiles@3.x.x:
   dependencies:
     boom "5.x.x"
 
-cryptiles@4.x.x:
+cryptiles@4.x.x, cryptiles@>=4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-4.1.3.tgz#2461d3390ea0b82c643a6ba79f0ed491b0934c25"
   dependencies:
@@ -2165,6 +2162,12 @@ dateformat@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
 
+debug@=3.1.0, debug@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  dependencies:
+    ms "2.0.0"
+
 debug@^2.2.0, debug@^2.6.0, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -2182,12 +2185,6 @@ debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@~4.1.0:
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
   dependencies:
     ms "^2.1.1"
-
-debug@~3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
-  dependencies:
-    ms "2.0.0"
 
 decamelize@^1.2.0:
   version "1.2.0"
@@ -2400,6 +2397,10 @@ errno@~0.1.1:
   dependencies:
     prr "~1.0.1"
 
+es6-promisify@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/es6-promisify/-/es6-promisify-6.0.1.tgz#6edaa45f3bd570ffe08febce66f7116be4b1cdb6"
+
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
@@ -2593,6 +2594,12 @@ fnv1a@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/fnv1a/-/fnv1a-1.0.1.tgz#915e2d6d023c43d5224ad9f6d2a3c4156f5712f5"
 
+follow-redirects@1.5.10:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
+  dependencies:
+    debug "=3.1.0"
+
 for-in@^0.1.3:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-0.1.8.tgz#d8773908e31256109952b1fdb9b3fa867d2775e1"
@@ -2679,6 +2686,24 @@ gc-stats@^1.2.1:
   dependencies:
     nan "^2.13.2"
     node-pre-gyp "^0.13.0"
+
+"geesome-libs@git://github.com/galtspace/geesome-libs.git#a6bcabf":
+  version "1.0.0"
+  resolved "git://github.com/galtspace/geesome-libs.git#a6bcabf26365d8530ba7e9c3b1e2e7aecfe02f93"
+  dependencies:
+    axios "^0.19.0"
+    base64url "^3.0.1"
+    cids "^0.7.1"
+    cryptiles ">=4.1.3"
+    es6-promisify "^6.0.1"
+    hat "^0.0.3"
+    ipfs "^0.35.0"
+    ipns "^0.5.2"
+    lodash "^4.17.11"
+    multihashes "~0.4.14"
+    p-iteration "^1.1.8"
+    peer-id "^0.12.2"
+    sha3 "^2.0.6"
 
 get-browser-rtc@^1.0.0:
   version "1.0.2"
@@ -2866,7 +2891,7 @@ hashlru@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/hashlru/-/hashlru-2.3.0.tgz#5dc15928b3f6961a2056416bb3a4910216fdfb51"
 
-hat@~0.0.3:
+hat@^0.0.3, hat@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/hat/-/hat-0.0.3.tgz#bb014a9e64b3788aed8005917413d4ff3d502d8a"
 
@@ -3590,7 +3615,7 @@ iron@5.x.x:
     cryptiles "4.x.x"
     hoek "6.x.x"
 
-is-buffer@^2.0.3:
+is-buffer@^2.0.2, is-buffer@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-2.0.3.tgz#4ecf3fcf749cbd1e472689e109ac66261a25e725"
 
@@ -5042,6 +5067,10 @@ p-is-promise@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/p-is-promise/-/p-is-promise-2.1.0.tgz#918cebaea248a62cf7ffab8e3bca8c5f882fc42e"
 
+p-iteration@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/p-iteration/-/p-iteration-1.1.8.tgz#14df726d55af368beba81bcc92a26bb1b48e714a"
+
 p-limit@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.2.0.tgz#417c9941e6027a9abcba5092dd2904e255b5fbc2"
@@ -5828,6 +5857,12 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+sha3@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/sha3/-/sha3-2.0.6.tgz#bba49db667d151b76fb17b98757cd9a659fc53eb"
+  dependencies:
+    buffer "5.2.1"
 
 shallow-clone@^1.0.0:
   version "1.0.0"

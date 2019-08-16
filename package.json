@@ -10,7 +10,7 @@
     }
   },
   "dependencies": {
-    "geesome-libs": "git://github.com/galtspace/geesome-libs.git#f45984a",
+    "geesome-libs": "git://github.com/galtspace/geesome-libs.git#a6bcabf",
     "async": "^3.1.0",
     "base64url": "^3.0.1",
     "bech32": "^1.1.3",

@@ -202,33 +202,6 @@ async function getKey(ipfsKey) {
 
   packetList.push(userIdPacket);
 
-  function createdPreferredAlgos(algos, configAlgo) {
-    if (configAlgo) { // Not `uncompressed` / `plaintext`
-      const configIndex = algos.indexOf(configAlgo);
-      if (configIndex >= 1) { // If it is included and not in first place,
-        algos.splice(configIndex, 1); // remove it.
-      }
-      if (configIndex !== 0) { // If it was included and not in first place, or wasn't included,
-        algos.unshift(configAlgo); // add it to the front.
-      }
-    }
-    return algos;
-  }
-
-  async function getLatestValidSignature(signatures, primaryKey, signatureType, dataToVerify, date = new Date()) {
-    let signature;
-    for (let i = signatures.length - 1; i >= 0; i--) {
-      if ((!signature || signatures[i].created >= signature.created) &&
-        // check binding signature is not expired (ie, check for V4 expiration time)
-        !signatures[i].isExpired(date) && (
-          // check binding signature is verified
-          signatures[i].verified || (await signatures[i].verify(primaryKey, signatureType, dataToVerify)))) {
-        signature = signatures[i];
-      }
-    }
-    return signature;
-  }
-
   const signaturePacket = new openpgp.packet.Signature(new Date());
   signaturePacket.signatureType = openpgp.enums.signature.cert_generic;
   signaturePacket.publicKeyAlgorithm = secretKey.algorithm;
@@ -293,7 +266,6 @@ async function getKey(ipfsKey) {
     return this;
   }).bind(resultKey);
 
-
   resultKey.getEncryptionKey = (function () {
     return this;
   }).bind(resultKey);
@@ -302,12 +274,35 @@ async function getKey(ipfsKey) {
     const primaryKey = this.keyPacket;
     const dataToVerify = { userId: userIdPacket, key: primaryKey };
     const selfCertification = await getLatestValidSignature(this.users[0].selfCertifications, primaryKey, openpgp.enums.signature.cert_generic, dataToVerify);
-    
-    const primaryUser = _.extend(this.users[0], { selfCertification });
-    console.log('primaryUser', primaryUser);
-    return primaryUser;
+    return _.extend(this.users[0], { selfCertification });
   }).bind(resultKey);
   
   return resultKey;
-  // return packetList;
+}
+
+function createdPreferredAlgos(algos, configAlgo) {
+  if (configAlgo) { // Not `uncompressed` / `plaintext`
+    const configIndex = algos.indexOf(configAlgo);
+    if (configIndex >= 1) { // If it is included and not in first place,
+      algos.splice(configIndex, 1); // remove it.
+    }
+    if (configIndex !== 0) { // If it was included and not in first place, or wasn't included,
+      algos.unshift(configAlgo); // add it to the front.
+    }
+  }
+  return algos;
+}
+
+async function getLatestValidSignature(signatures, primaryKey, signatureType, dataToVerify, date = new Date()) {
+  let signature;
+  for (let i = signatures.length - 1; i >= 0; i--) {
+    if ((!signature || signatures[i].created >= signature.created) &&
+      // check binding signature is not expired (ie, check for V4 expiration time)
+      !signatures[i].isExpired(date) && (
+        // check binding signature is verified
+        signatures[i].verified || (await signatures[i].verify(primaryKey, signatureType, dataToVerify)))) {
+      signature = signatures[i];
+    }
+  }
+  return signature;
 }
